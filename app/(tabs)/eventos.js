@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import EventoCard from "../components/EventoCard";
-import { EventosContext } from "./_layout";
+import EventoCard from "../../components/EventoCard"; // CORRIGIDO: Agora sobe dois níveis (../../)
+import { EventosContext } from "../_layout"; // CORRIGIDO: Agora sobe um nível (../)
 
 export default function EventosScreen() {
   const { eventos } = useContext(EventosContext);
@@ -35,15 +35,31 @@ export default function EventosScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#000" },
-  content: { padding: 20 },
+  container: { 
+    flex: 1, 
+    backgroundColor: "#000" 
+  },
+  content: { 
+    padding: 20 
+  },
   centro: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#000",
   },
-  emoji: { fontSize: 48, marginBottom: 12 },
-  textoInfo: { fontSize: 18, fontWeight: "bold", color: "#333" },
-  textoSub: { fontSize: 14, color: "#777", marginTop: 6 },
+  emoji: { 
+    fontSize: 48, 
+    marginBottom: 12 
+  },
+  textoInfo: { 
+    fontSize: 18, 
+    fontWeight: "bold", 
+    color: "#fff" 
+  },
+  textoSub: { 
+    fontSize: 14, 
+    color: "#888", 
+    marginTop: 6 
+  },
 });

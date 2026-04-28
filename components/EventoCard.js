@@ -3,29 +3,45 @@ import { View, Text, StyleSheet } from "react-native";
 export default function EventoCard({ nome, andar, inicio, fim }) {
   return (
     <View style={styles.card}>
-      <Text style={styles.nome}>{nome}</Text>
-      <Text style={styles.detalhe}>📍 {andar}º Andar</Text>
-      <Text style={styles.detalhe}>
-        🕐 {inicio} — {fim}
-      </Text>
+      <View style={styles.conteudo}>
+        <Text style={styles.nome}>{nome}</Text>
+        <Text style={styles.detalhe}>📍 {andar}º Andar</Text>
+        <Text style={styles.detalhe}>
+          🕐 {inicio} — {fim}
+        </Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: "#121212", // Fundo cinza bem escuro
     borderRadius: 12,
-    padding: 16,
     marginBottom: 12,
-    borderLeftWidth: 4,
-    borderLeftColor: "#ED1C24",
-    elevation: 2,
+    // Borda lateral rosa para manter a identidade visual
+    borderLeftWidth: 5,
+    borderLeftColor: "#ED145B", 
+    // Sombras ajustadas para fundo escuro
+    elevation: 3,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: "#222",
   },
-  nome: { fontSize: 16, fontWeight: "bold", color: "#222" },
-  detalhe: { fontSize: 14, color: "#555", marginTop: 4 },
+  conteudo: {
+    padding: 16,
+  },
+  nome: { 
+    fontSize: 18, 
+    fontWeight: "bold", 
+    color: "#FFFFFF" // Nome em branco
+  },
+  detalhe: { 
+    fontSize: 14, 
+    color: "#AAAAAA", // Cinza claro para os detalhes
+    marginTop: 6 
+  },
 });

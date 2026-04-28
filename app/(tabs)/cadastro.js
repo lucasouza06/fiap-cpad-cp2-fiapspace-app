@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
-import { EventosContext } from "./_layout";
+import { EventosContext } from "../_layout"; // CORREÇÃO: Usando ../ para subir um nível
 
 export default function CadastroScreen() {
   const router = useRouter();
@@ -40,11 +40,13 @@ export default function CadastroScreen() {
     }
 
     setSalvando(true);
+    
+    // Simulação de salvamento local
     setTimeout(() => {
       setEventos((prev) => [...prev, { nome, andar, inicio, fim }]);
       setSalvando(false);
       Alert.alert("Sucesso!", "Evento cadastrado com sucesso.", [
-        { text: "OK", onPress: () => router.back() },
+        { text: "OK", onPress: () => router.replace("/home") },
       ]);
     }, 500);
   }
@@ -57,6 +59,7 @@ export default function CadastroScreen() {
         value={nome}
         onChangeText={setNome}
         placeholder="Ex: Workshop de Design"
+        placeholderTextColor="#666"
       />
 
       <Text style={styles.label}>Andar (1 ou 2)</Text>
@@ -65,6 +68,7 @@ export default function CadastroScreen() {
         value={andar}
         onChangeText={setAndar}
         placeholder="1"
+        placeholderTextColor="#666"
         keyboardType="numeric"
         maxLength={1}
       />
@@ -75,6 +79,7 @@ export default function CadastroScreen() {
         value={inicio}
         onChangeText={setInicio}
         placeholder="08:00"
+        placeholderTextColor="#666"
         keyboardType="numeric"
         maxLength={5}
       />
@@ -85,6 +90,7 @@ export default function CadastroScreen() {
         value={fim}
         onChangeText={setFim}
         placeholder="10:00"
+        placeholderTextColor="#666"
         keyboardType="numeric"
         maxLength={5}
       />
@@ -105,25 +111,26 @@ export default function CadastroScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f5f5f5" },
+  container: { flex: 1, backgroundColor: "#000" }, // Fundo preto
   content: { padding: 20 },
   label: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#333",
+    color: "#fff",
     marginBottom: 6,
     marginTop: 16,
   },
   input: {
-    backgroundColor: "#fff",
+    backgroundColor: "#121212",
     borderRadius: 8,
     padding: 12,
     fontSize: 15,
+    color: "#fff",
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#333",
   },
   botao: {
-    backgroundColor: "#ED1C24",
+    backgroundColor: "#ED145B",
     borderRadius: 10,
     padding: 16,
     alignItems: "center",
