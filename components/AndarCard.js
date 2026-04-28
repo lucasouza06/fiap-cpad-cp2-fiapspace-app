@@ -1,20 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+function calcularTempoRestante(horarioFim) {
+  const agora = new Date();
+  const [horas, minutos] = horarioFim.split(':').map(Number);
+  const fim = new Date();
+  fim.setHours(horas, minutos, 0, 0);
+  const diffMs = fim - agora;
+  if (diffMs <= 0) return null;
+  const diffMin = Math.floor(diffMs / 60000);
+  const hRestantes = Math.floor(diffMin / 60);
+  const mRestantes = diffMin % 60;
+  if (hRestantes > 0) return `libera em ${hRestantes}h ${mRestantes}min`;
+  if (mRestantes === 0) return 'liberando agora';
+  return `libera em ${mRestantes}min`;
+}
+
 export default function AndarCard({ andar, ocupado, nomeEvento, horario }) {
-  // Definimos cores mais vibrantes para os dots no fundo escuro
   const statusColor = ocupado ? '#FF3B30' : '#4CD964';
+  const [tempoRestante, setTempoRestante] = useState(
+    ocupado && horario ? calcularTempoRestante(horario) : null
+  );
+
+  useEffect(() => {
+    if (!ocupado || !horario) {
+      setTempoRestante(null);
+      return;
+    }
+    setTempoRestante(calcularTempoRestante(horario));
+    const intervalo = setInterval(() => {
+      const tempo = calcularTempoRestante(horario);
+      setTempoRestante(tempo);
+      if (!tempo) clearInterval(intervalo);
+    }, 30000);
+    return () => clearInterval(intervalo);
+  }, [ocupado, horario]);
 
   return (
     <View style={styles.card}>
-      {/* 1. O "NEGÓCIO ROSA" - Detalhe lateral esquerdo */}
       <View style={styles.detalheRosa} />
-      
-      {/* 2. CONTEÚDO DO CARD (Textos) */}
       <View style={styles.conteudo}>
         <View style={styles.headerRow}>
           <Text style={styles.titulo}>{andar}º Andar</Text>
-          
           <View style={styles.statusBadge}>
             <View style={[styles.dot, { backgroundColor: statusColor }]} />
             <Text style={[styles.statusTexto, { color: statusColor }]}>
@@ -26,7 +53,12 @@ export default function AndarCard({ andar, ocupado, nomeEvento, horario }) {
         {ocupado && (
           <View style={styles.infoEvento}>
             <Text style={styles.nomeEvento}>{nomeEvento}</Text>
-            <Text style={styles.horario}>até {horario}</Text>
+            <View style={styles.rodape}>
+              <Text style={styles.horario}>até {horario}</Text>
+              {tempoRestante && (
+                <Text style={styles.countdown}>{tempoRestante}</Text>
+              )}
+            </View>
           </View>
         )}
       </View>
@@ -36,23 +68,22 @@ export default function AndarCard({ andar, ocupado, nomeEvento, horario }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#121212', // Cinza muito escuro para contraste
+    backgroundColor: '#121212',
     borderRadius: 16,
     marginBottom: 16,
-    flexDirection: 'row', // Alinha o detalhe rosa ao lado do conteúdo
-    overflow: 'hidden', // Garante que o detalhe rosa não saia do border radius
+    flexDirection: 'row',
+    overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#222', // Borda sutil
+    borderColor: '#222',
   },
-  // ESTILO DO DETALHE ROSA
   detalheRosa: {
-    width: 6, // Largura da barra
-    backgroundColor: '#ED145B', // Rosa FIAP
+    width: 6,
+    backgroundColor: '#ED145B',
   },
   conteudo: {
     flex: 1,
     padding: 20,
-    paddingLeft: 16, // Um pouco menos de padding na esquerda para compensar a barra
+    paddingLeft: 16,
   },
   headerRow: {
     flexDirection: 'row',
@@ -64,7 +95,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '800',
     color: '#FFF',
-    fontFamily: 'sans-serif',
   },
   statusBadge: {
     flexDirection: 'row',
@@ -83,7 +113,6 @@ const styles = StyleSheet.create({
   statusTexto: {
     fontSize: 14,
     fontWeight: '600',
-    fontFamily: 'sans-serif',
   },
   infoEvento: {
     marginTop: 12,
@@ -95,11 +124,21 @@ const styles = StyleSheet.create({
     color: '#BBB',
     fontSize: 15,
     fontWeight: '600',
-    textTransform: 'uppercase', // Estilo profissional
-    marginBottom: 2,
+    textTransform: 'uppercase',
+    marginBottom: 6,
+  },
+  rodape: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   horario: {
     color: '#888',
     fontSize: 14,
+  },
+  countdown: {
+    color: '#ED145B',
+    fontSize: 13,
+    fontWeight: '700',
   },
 });
