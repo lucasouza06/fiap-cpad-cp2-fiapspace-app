@@ -5,10 +5,14 @@ export default function EventoCard({ nome, andar, inicio, fim }) {
     <View style={styles.card}>
       <View style={styles.conteudo}>
         <Text style={styles.nome}>{nome}</Text>
-        <Text style={styles.detalhe}>📍 {andar}º Andar</Text>
-        <Text style={styles.detalhe}>
-          🕐 {inicio} — {fim}
-        </Text>
+        <View style={styles.detalhes}>
+          <View style={styles.tag}>
+            <Text style={styles.tagTexto}>📍 {andar}º Andar</Text>
+          </View>
+          <View style={styles.tag}>
+            <Text style={styles.tagTexto}>🕐 {inicio} — {fim}</Text>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -16,32 +20,37 @@ export default function EventoCard({ nome, andar, inicio, fim }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#121212", // Fundo cinza bem escuro
+    backgroundColor: "#141414",
     borderRadius: 12,
     marginBottom: 12,
-    // Borda lateral rosa para manter a identidade visual
-    borderLeftWidth: 5,
-    borderLeftColor: "#ED145B", 
-    // Sombras ajustadas para fundo escuro
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
+    borderLeftWidth: 4,
+    borderLeftColor: "#ED145B",
     borderWidth: 1,
     borderColor: "#222",
   },
   conteudo: {
     padding: 16,
   },
-  nome: { 
-    fontSize: 18, 
-    fontWeight: "bold", 
-    color: "#FFFFFF" // Nome em branco
+  nome: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#FFFFFF",
+    marginBottom: 10,
   },
-  detalhe: { 
-    fontSize: 14, 
-    color: "#AAAAAA", // Cinza claro para os detalhes
-    marginTop: 6 
+  detalhes: {
+    flexDirection: "row",
+    gap: 8,
+    flexWrap: "wrap",
+  },
+  tag: {
+    backgroundColor: "#1e1e1e",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 20,
+  },
+  tagTexto: {
+    color: "#888",
+    fontSize: 12,
+    fontWeight: "500",
   },
 });

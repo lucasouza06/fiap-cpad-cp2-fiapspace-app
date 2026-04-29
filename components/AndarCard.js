@@ -38,13 +38,13 @@ export default function AndarCard({ andar, ocupado, nomeEvento, horario }) {
 
   return (
     <View style={styles.card}>
-      <View style={styles.detalheRosa} />
+      <View style={styles.acento} />
       <View style={styles.conteudo}>
         <View style={styles.headerRow}>
           <Text style={styles.titulo}>{andar}º Andar</Text>
-          <View style={styles.statusBadge}>
+          <View style={[styles.badge, { backgroundColor: ocupado ? 'rgba(255,59,48,0.1)' : 'rgba(76,217,100,0.1)' }]}>
             <View style={[styles.dot, { backgroundColor: statusColor }]} />
-            <Text style={[styles.statusTexto, { color: statusColor }]}>
+            <Text style={[styles.badgeTexto, { color: statusColor }]}>
               {ocupado ? 'Ocupado' : 'Livre'}
             </Text>
           </View>
@@ -68,63 +68,62 @@ export default function AndarCard({ andar, ocupado, nomeEvento, horario }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#121212',
-    borderRadius: 16,
-    marginBottom: 16,
+    backgroundColor: '#141414',
+    borderRadius: 14,
+    marginBottom: 14,
     flexDirection: 'row',
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#222',
   },
-  detalheRosa: {
-    width: 6,
+  acento: {
+    width: 4,
     backgroundColor: '#ED145B',
   },
   conteudo: {
     flex: 1,
-    padding: 20,
-    paddingLeft: 16,
+    padding: 18,
+    paddingLeft: 14,
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
   },
   titulo: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '800',
     color: '#FFF',
   },
-  statusBadge: {
+  badge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.05)',
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 5,
     borderRadius: 20,
   },
   dot: {
-    width: 8,
-    height: 8,
+    width: 7,
+    height: 7,
     borderRadius: 4,
     marginRight: 6,
   },
-  statusTexto: {
-    fontSize: 14,
-    fontWeight: '600',
+  badgeTexto: {
+    fontSize: 13,
+    fontWeight: '700',
   },
   infoEvento: {
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.1)',
+    borderTopColor: '#1e1e1e',
   },
   nomeEvento: {
-    color: '#BBB',
-    fontSize: 15,
+    color: '#aaa',
+    fontSize: 14,
     fontWeight: '600',
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
     marginBottom: 6,
   },
   rodape: {
@@ -133,12 +132,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   horario: {
-    color: '#888',
-    fontSize: 14,
+    color: '#555',
+    fontSize: 13,
   },
   countdown: {
     color: '#ED145B',
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '700',
   },
 });
