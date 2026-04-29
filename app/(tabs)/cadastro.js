@@ -4,6 +4,7 @@ import {
   ActivityIndicator, ScrollView, KeyboardAvoidingView, Platform, Alert
 } from 'react-native';
 import { EventosContext } from '../_layout';
+import { COLORS, FONT_SIZES, RADII, SPACING } from '../../constants/theme';
 
 export default function NovoEventoScreen() {
   const { eventos, setEventos } = useContext(EventosContext);
@@ -31,7 +32,7 @@ export default function NovoEventoScreen() {
       novosErros.andar = 'Andar é obrigatório';
     } else if (isNaN(andar) || parseInt(andar) < 1 || parseInt(andar) > 7) {
       novosErros.andar = 'Andar deve ser entre 1 e 7';
-    }s
+    }
     if (!inicio) novosErros.inicio = 'Horário de início é obrigatório';
     else if (!horaRegex.test(inicio)) novosErros.inicio = 'Use o formato HH:MM (ex: 14:00)';
     if (!fim) novosErros.fim = 'Horário de fim é obrigatório';
@@ -41,7 +42,7 @@ export default function NovoEventoScreen() {
     return novosErros;
   };
 
-  const handleSalvar = () => {
+  const handleSalvar = async () => {
     const novosErros = validar();
     if (Object.keys(novosErros).length > 0) {
       setErros(novosErros);
@@ -49,13 +50,14 @@ export default function NovoEventoScreen() {
     }
 
     setLoading(true);
-    setTimeout(() => {
-      setEventos([...eventos, {
+    setTimeout(async () => {
+      const novosEventos = [...eventos, {
         nome: form.nome.trim(),
         andar: form.andar.trim(),
         inicio: form.inicio.trim(),
         fim: form.fim.trim(),
-      }]);
+      }];
+      await setEventos(novosEventos);
       setLoading(false);
       Alert.alert('Sucesso!', 'Evento cadastrado com sucesso!');
       setForm({ nome: '', andar: '', inicio: '', fim: '' });
@@ -77,7 +79,7 @@ export default function NovoEventoScreen() {
           <TextInput
             style={[styles.input, erros.nome && styles.inputErro]}
             placeholder="Ex: Hackathon FIAP"
-            placeholderTextColor="#333"
+            placeholderTextColor={COLORS.placeholder}
             value={form.nome}
             onChangeText={(val) => handleChange('nome', val)}
           />
@@ -87,7 +89,7 @@ export default function NovoEventoScreen() {
           <TextInput
             style={[styles.input, erros.andar && styles.inputErro]}
             placeholder="Andar deve ser entre 1 e 7"
-            placeholderTextColor="#333"
+            placeholderTextColor={COLORS.placeholder}
             keyboardType="numeric"
             maxLength={1}
             value={form.andar}
@@ -99,7 +101,7 @@ export default function NovoEventoScreen() {
           <TextInput
             style={[styles.input, erros.inicio && styles.inputErro]}
             placeholder="Ex: 14:00"
-            placeholderTextColor="#333"
+            placeholderTextColor={COLORS.placeholder}
             value={form.inicio}
             maxLength={5}
             onChangeText={(val) => handleChange('inicio', val)}
@@ -110,7 +112,7 @@ export default function NovoEventoScreen() {
           <TextInput
             style={[styles.input, erros.fim && styles.inputErro]}
             placeholder="Ex: 18:00"
-            placeholderTextColor="#333"
+            placeholderTextColor={COLORS.placeholder}
             value={form.fim}
             maxLength={5}
             onChangeText={(val) => handleChange('fim', val)}
@@ -123,7 +125,7 @@ export default function NovoEventoScreen() {
             disabled={loading}
           >
             {loading
-              ? <ActivityIndicator color="#FFF" />
+              ? <ActivityIndicator color={COLORS.textPrimary} />
               : <Text style={styles.buttonText}>RESERVAR ESPAÇO</Text>
             }
           </TouchableOpacity>
@@ -134,75 +136,55 @@ export default function NovoEventoScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0a0a0a',
-  },
+  container: { flex: 1, backgroundColor: COLORS.background },
   topbar: {
-    paddingHorizontal: 20,
-    paddingTop: 16,
-    paddingBottom: 12,
+    paddingHorizontal: SPACING.xl,
+    paddingTop: SPACING.lg,
+    paddingBottom: SPACING.md,
     borderBottomWidth: 1,
-    borderBottomColor: '#1a1a1a',
+    borderBottomColor: COLORS.cardAlt,
   },
-  logo: {
-    color: '#ED145B',
-    fontSize: 22,
-    fontWeight: '900',
-  },
-  logoBranco: {
-    color: '#fff',
-  },
-  logoSub: {
-    color: '#555',
-    fontSize: 12,
-    marginTop: 2,
-  },
-  scrollContent: {
-    padding: 25,
-    flexGrow: 1,
-  },
-  form: {
-    width: '100%',
-  },
+  logo: { color: COLORS.primary, fontSize: FONT_SIZES.xxxl, fontWeight: '900' },
+  logoBranco: { color: COLORS.textPrimary },
+  logoSub: { color: COLORS.textMuted, fontSize: FONT_SIZES.xs, marginTop: 2 },
+  scrollContent: { padding: SPACING.xxl, flexGrow: 1 },
+  form: { width: '100%' },
   label: {
-    color: '#555',
-    fontSize: 10,
+    color: COLORS.textMuted,
+    fontSize: FONT_SIZES.xs,
     fontWeight: '700',
     letterSpacing: 1,
-    marginBottom: 8,
+    marginBottom: SPACING.sm,
     marginLeft: 2,
   },
   input: {
-    backgroundColor: '#141414',
-    color: '#FFF',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 4,
+    backgroundColor: COLORS.card,
+    color: COLORS.textPrimary,
+    padding: SPACING.lg,
+    borderRadius: RADII.md,
+    marginBottom: SPACING.xs,
     borderWidth: 1,
-    borderColor: '#2a2a2a',
-    fontSize: 15,
+    borderColor: COLORS.borderAlt,
+    fontSize: FONT_SIZES.base,
   },
-  inputErro: {
-    borderColor: '#ED145B',
-  },
+  inputErro: { borderColor: COLORS.primary },
   erroTexto: {
-    color: '#ED145B',
-    fontSize: 12,
-    marginBottom: 14,
+    color: COLORS.primary,
+    fontSize: FONT_SIZES.sm,
+    marginBottom: SPACING.md,
     marginLeft: 2,
   },
   button: {
-    backgroundColor: '#ED145B',
+    backgroundColor: COLORS.primary,
     padding: 18,
-    borderRadius: 12,
+    borderRadius: RADII.md,
     alignItems: 'center',
-    marginTop: 24,
+    marginTop: SPACING.xxl,
   },
   buttonText: {
-    color: '#FFF',
+    color: COLORS.textPrimary,
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: FONT_SIZES.base,
     letterSpacing: 1,
   },
 });
